@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "585133959592",
+    "firebase_url": "https://hygie-bc1f5.firebaseio.com",
+    "project_id": "hygie-bc1f5",
+    "storage_bucket": "hygie-bc1f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585133959592:android:fed5964debab183e22d59d",
+        "android_client_info": {
+          "package_name": "com.example.hygie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585133959592-mtcuefm3o3bq705q72o4eivd2ra9g0f3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB18CMKOZGXZObHF_6Z8fVkNfdTTOoX00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585133959592-mtcuefm3o3bq705q72o4eivd2ra9g0f3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
