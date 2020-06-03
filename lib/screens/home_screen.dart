@@ -52,7 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
                          SignInButton(
                            Buttons.Google,
                            onPressed: () async {
-
                              final user = await Auth.googleSignIn();
                              if(user != null){
                                Navigator.pushAndRemoveUntil(

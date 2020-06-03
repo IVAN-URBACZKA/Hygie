@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "585133959592-ndam3ikd59no5tij4visvnebe8rqp8vd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hygie",
+            "certificate_hash": "ff1a1f4f1807bdf85cbec31c9d94af2031d99a85"
+          }
+        },
+        {
           "client_id": "585133959592-mtcuefm3o3bq705q72o4eivd2ra9g0f3.apps.googleusercontent.com",
           "client_type": 3
         }

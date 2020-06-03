@@ -24,6 +24,7 @@ dependencies:
   flutter_signin_button: ^1.0.0
   google_sign_in:
   apple_sign_in: ^0.1.0
+  flutter_svg: ^0.17.4
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +36,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/icons/
 
 
   fonts:

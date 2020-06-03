@@ -55,23 +55,20 @@ abstract class Auth {
     );
     try {
       final GoogleSignInAccount googleAccount = await google.signIn();
-      final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleAccount.authentication;
+      final GoogleSignInAuthentication googleSignInAuthentication = await googleAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
 
-      final AuthResult authResult =
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final AuthResult authResult = await FirebaseAuth.instance.signInWithCredential(credential);
       final FirebaseUser user = authResult.user;
 
       assert(!user.isAnonymous);
       assert(await user.getIdToken() != null);
 
-      final FirebaseUser currentUser =
-      await FirebaseAuth.instance.currentUser();
+      final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
       assert(user.uid == currentUser.uid);
       return user.uid;
     } catch (error) {
