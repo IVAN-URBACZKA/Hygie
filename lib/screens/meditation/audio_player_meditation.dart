@@ -27,6 +27,12 @@ class _AudioPlayerNavigationState extends State<AudioPlayerNavigation> {
     super.initState();
   }
 
+  void seekToSecond(int second){
+    Duration newDuration = Duration(seconds: second);
+
+    advancedPlayer.seek(newDuration);
+  }
+
   void initPlayer(){
     advancedPlayer = new AudioPlayer();
     audioCache = new AudioCache(fixedPlayer: advancedPlayer);
@@ -55,6 +61,11 @@ class _AudioPlayerNavigationState extends State<AudioPlayerNavigation> {
     });
   }
 
+  @override
+  void dispose() {
+    _stopFile();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,82 +75,122 @@ class _AudioPlayerNavigationState extends State<AudioPlayerNavigation> {
         body: Column(
           children: <Widget>[
             Container(
-              child: Image.asset('assets/images/meditation.jpg'),
+              child: Image.asset(
+                  musicBrain.getUrlImage(),
+                   fit: BoxFit.fitHeight,
+                   height: 400,
+              ),
             ),
-            SizedBox(height: 60.0,),
-            Text(musicBrain.getAuthorMusic(),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Rubik',
-                  fontSize: 25,
-                  fontWeight: FontWeight.w300
-              ),),
-            SizedBox(height: 35.0,),
-            Text(musicBrain.getTitleMusic(),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontFamily: 'Rubik',
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.italic
-              ),),
-            SizedBox(height: 60.0,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Column(
               children: <Widget>[
-                Icon(Icons.skip_previous,color: Colors.white,size: 45,),
-                play == true ? IconButton(
-                    icon: Icon(Icons.play_arrow),
-                    color: Colors.white,
-                    iconSize: 45,
-                    onPressed: () {
-                        _playFile(musicBrain.getUrlMusic());
-                    })
-                    :
-                IconButton(
-                  icon: Icon(Icons.stop),
-                  color: Colors.white,
-                  iconSize: 45,
-                  onPressed: () {
-                    _stopFile();
-                  },
+                SizedBox(height: 10.0,),
+                Container(
+                  child: Text(musicBrain.getAuthorMusic(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Rubik',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                    ),),
                 ),
-                IconButton(
-                  icon: Icon(Icons.skip_next),
-                  color: Colors.white,
-                  iconSize: 45,
-                  onPressed: () {
-
-                  },
-                )
-              ],
-            ),
-            SizedBox(height: 30,),
-            Slider(
-              activeColor: Colors.white,
-              inactiveColor: Colors.pink,
-              min: 0.0,
-              max: _duration.inSeconds.toDouble(),
-              value: _position.inSeconds.toDouble(),
-              onChanged: (double value) {
-                setState(() {
-                  value = value;
-                });
-              },
-            ),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text('${_position.inMinutes.toString()}:${_position.inSeconds.remainder(60).toString()}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25.0
+                SizedBox(height: 10.0,),
+                Container(
+                  child: Text(musicBrain.getTitleMusic(),
+                    style: TextStyle(
+                        color: Colors.grey[300],
+                        fontSize: 18,
+                        fontFamily: 'Rubik',
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.italic
+                    ),),
+                ),
+                SizedBox(height: 10.0,),
+                Text(musicBrain.getListLength(), style: TextStyle(
+                  color: Colors.grey[300]
                 ),),
-                Text('${_duration.inMinutes.toString()}:${_duration.inSeconds.remainder(60).toString()}',style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25.0
-                ),)
+                SliderTheme(
+                  data: SliderTheme.of(context).copyWith(trackHeight: 1.0, thumbShape: RoundSliderThumbShape(enabledThumbRadius: 7.0), overlayShape:
+                  RoundSliderOverlayShape(overlayRadius: 30.0)),
+                  child: Slider(
+                    activeColor: Colors.white,
+                    inactiveColor: Colors.grey[600],
+                    min: 0.0,
+                    max: _duration.inSeconds.toDouble(),
+                    value: _position.inSeconds.toDouble(),
+                    onChanged: (double value) {
+                      setState(() {
+                        seekToSecond(value.toInt());
+                        value = value;
+                      });
+                    },
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 100.0),
+                      child: Text('${_position.inMinutes.toString()}:${_position.inSeconds.remainder(60).toString()}',
+                        style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: 15.0
+                        ),),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left:100.0),
+                      child: Text('${_duration.inMinutes.toString()}:${_duration.inSeconds.remainder(60).toString()}',style: TextStyle(
+                          color: Colors.grey[300],
+                          fontSize: 15.0
+                      ),),
+                    )
+                  ],
+                ),
+                SizedBox(height: 30.0,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.skip_previous),
+                      color: Colors.white,
+                      iconSize: 45,
+                      onPressed: () {
+                        setState(() {
+                          musicBrain.previousMusic();
+                          _position = Duration();
+                          _stopFile();
+                        });
+                      },
+                    ),
+                    play == true ? IconButton(
+                        icon: Icon(Icons.play_circle_filled),
+                        color: Colors.white,
+                        iconSize: 45,
+                        onPressed: () {
+                          _playFile(musicBrain.getUrlMusic());
+                        })
+                        :
+                    IconButton(
+                      icon: Icon(Icons.pause_circle_filled),
+                      color: Colors.white,
+                      iconSize: 45,
+                      onPressed: () {
+                        _stopFile();
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.skip_next),
+                      color: Colors.white,
+                      iconSize: 45,
+                      onPressed: () {
+                        setState(() {
+                          musicBrain.nextMusic();
+                          _position = Duration();
+                          _stopFile();
+                        });
+                      },
+                    )
+                  ],
+                ),
               ],
             )
           ],
@@ -148,6 +199,8 @@ class _AudioPlayerNavigationState extends State<AudioPlayerNavigation> {
     );
   }
 }
+
+
 
 
 

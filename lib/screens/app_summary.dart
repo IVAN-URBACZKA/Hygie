@@ -7,6 +7,7 @@ import 'package:hygie/screens/lithotherapie/lithotherapie_screen.dart';
 import 'package:hygie/screens/meditation/audio_player_meditation.dart';
 import 'package:hygie/screens/numerology/numerology_screen.dart';
 import 'package:hygie/screens/phytotherapie/phytotherapie_screen.dart';
+import 'package:hygie/screens/test/test_screen.dart';
 
 class AppSummary extends StatefulWidget {
 
@@ -122,7 +123,14 @@ class _AppSummaryState extends State<AppSummary> {
                             title: "Test",
                             svgSrc: "assets/icons/test.svg",
                             press: () {
-
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) {
+                                        return TestScreen();
+                                      }
+                                  )
+                              );
                             },
                           )
                         ],
